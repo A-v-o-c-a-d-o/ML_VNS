@@ -37,7 +37,8 @@ if __name__ == "__main__":
                 num_training_steps=len(train_dataloader)*EPOCHS
             )
 
-    training()
-    save(model, 'Model/model.pt')
-    save(cnn, 'Model/cnn.pt')
+    # uncomment this to train and save model
+    # training()
+    # save(model, 'Model/model.pt')
+    # save(cnn, 'Model/cnn.pt')
     testing(n)
