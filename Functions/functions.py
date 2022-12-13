@@ -28,11 +28,11 @@ def train(model, img_model, loss_func, img_loss_func, optimizer, img_optimizer, 
         correct += torch.sum(pred == input['targets'])
         losses.append(loss.item() + img_loss.item())
         # losses.append(img_loss.item())
-        loss.backward()
         img_loss.backward() #img
-        nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
-        optimizer.step()
         img_optimizer.step() #img
+        nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+        loss.backward()
+        optimizer.step()
         lr_scheduler.step()
 
     print(f'Train Accuracy: {correct.double()/len(data_loader.dataset)} Loss: {np.mean(losses)}')
@@ -49,7 +49,7 @@ def test(model, img_model, data_loader, loss_func, img_loss_func):
             img_outputs = img_model(input) #img
 
             pred = torch.round((2*torch.max(outputs, dim=1)[1] + torch.max(img_outputs, dim=1)[1])/3)
-            _, pred = torch.max(img_outputs, dim=1)
+            # _, pred = torch.max(img_outputs, dim=1)
 
             loss = loss_func(outputs, input['targets'])
             img_loss = img_loss_func(img_outputs, input['targets']) #img
@@ -62,7 +62,7 @@ def test(model, img_model, data_loader, loss_func, img_loss_func):
 def get_dataloader():
     df = pd.read_csv('Data/full_train.csv')
     df = df.dropna()
-    # df = df.head(10)
+    df = df.head(300)
     # shuffle the DataFrame rows
     df = df.sample(frac = 1)
     train_df, test_df = train_test_split(df, train_size=0.7)
