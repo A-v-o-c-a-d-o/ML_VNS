@@ -62,7 +62,6 @@ def test(model, img_model, data_loader, loss_func, img_loss_func):
 def get_dataloader():
     df = pd.read_csv('Data/full_train.csv')
     df = df.dropna()
-    df = df.head(300)
     # shuffle the DataFrame rows
     df = df.sample(frac = 1)
     train_df, test_df = train_test_split(df, train_size=0.7)

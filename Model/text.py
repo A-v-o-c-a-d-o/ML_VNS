@@ -7,7 +7,7 @@ class MyModel(torch.nn.Module):
     def __init__(self):
         super(MyModel, self).__init__()
         self.bert = AutoModel.from_pretrained("vinai/phobert-base")
-        self.drop = nn.Dropout(p=0.3)
+        self.drop = nn.Dropout(p=0.5)
         self.fc = nn.Linear(self.bert.config.hidden_size, 2)
         nn.init.normal_(self.fc.weight, std=0.02)
         nn.init.normal_(self.fc.bias, 0)
